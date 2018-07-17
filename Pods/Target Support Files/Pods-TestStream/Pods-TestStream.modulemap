@@ -1,0 +1,6 @@
+framework module Pods_TestStream {
+  umbrella header "Pods-TestStream-umbrella.h"
+
+  export *
+  module * { export * }
+}
