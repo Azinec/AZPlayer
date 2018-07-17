@@ -31,7 +31,7 @@ class PlaylistManager: NSObject {
     func fetchPlaylist() {
         do {
             if let playlist = try M3U8PlaylistModel(url: baseUrl).audioPl {
-                    let tempName = "\(NSDate().timeIntervalSince1970)".replacingOccurrences(of: ".", with: "")
+                let tempName = "\(NSDate().timeIntervalSince1970)".replacingOccurrences(of: ".", with: "")
                 if let segmentUrl = playlist.allSegmentURLs().first as? URL {
                     let downloader = DataDownloader(with: segmentUrl)
                     downloader.startDownload(tempName: tempName)
@@ -148,11 +148,9 @@ extension DataDownloader: URLSessionDelegate, URLSessionDataDelegate {
             dM.writeToFile(data: gD)
             DispatchQueue.main.async {
                 PlayerView.shared.setProgress(progress: 1.0)
-            }
-            if !isPlaying {
-//                isPlaying = true
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "playit"), object: nil, userInfo: ["name": self.dataManager.getTempName()])
             }
+            
         }
     }
     

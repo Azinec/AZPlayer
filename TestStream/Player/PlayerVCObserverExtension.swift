@@ -47,10 +47,7 @@ extension PlayerViewController {
                             isPlaying = true
                             PlayerView.shared.isDownloadedMedia = true
                             PlayerView.shared.playerStatus = .Playing
-                            DispatchQueue.main.async {
-                                jB.play()
-                            }
-                            
+                            jB.play()
                         }
                     }
                     
