@@ -101,6 +101,7 @@ class PlayerView: UIView, AVAudioPlayerDelegate {
         self.view.layer.cornerRadius = self.view.frame.height / 2
         self.view.layer.cornerRadius = self.view.frame.height / 2
         notifCenter.addObserver(self, selector : #selector(self.playMusicF), name: NSNotification.Name(rawValue: "playit"), object: nil)
+        notifCenter.addObserver(self, selector : #selector(self.changeToUninitializedState), name: NSNotification.Name(rawValue: "uninitialize"), object: nil)
         spinner.isHidden = true
     }
     
@@ -160,6 +161,10 @@ class PlayerView: UIView, AVAudioPlayerDelegate {
         
     }
     
+    @objc func changeToUninitializedState() {
+        self.isDownloadedMedia = false
+        controllerButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
+    }
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         controllerButton.setImage(nil, for: .normal)

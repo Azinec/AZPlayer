@@ -134,6 +134,7 @@ class DataManager:NSObject {
     func removeLocallyCachedFile(urlPath : URL) {
         var fileManager = FileManager.default
         try! fileManager.removeItem(at: urlPath)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "uninitialize"), object: self)
     }
     
     
@@ -164,6 +165,7 @@ extension DataDownloader: URLSessionDelegate, URLSessionDataDelegate {
     
     
 }
+
 
 
 
