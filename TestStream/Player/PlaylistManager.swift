@@ -129,6 +129,14 @@ class DataManager:NSObject {
             debugPrint(error)
         }
     }
+    
+    
+    func removeLocallyCachedFile(urlPath : URL) {
+        var fileManager = FileManager.default
+        try! fileManager.removeItem(at: urlPath)
+    }
+    
+    
 }
 
 

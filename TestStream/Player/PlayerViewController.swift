@@ -70,7 +70,7 @@ class PlayerViewController: UIViewController, AVAudioPlayerDelegate {
         notifCenter.addObserver(self, selector : #selector(self.play), name : NSNotification.Name(rawValue : "download"), object : nil)
         notifCenter.addObserver(self, selector : #selector(self.pause), name : NSNotification.Name(rawValue : "pause"), object : nil)
         notifCenter.addObserver(self, selector : #selector(self.continuePlaying), name : NSNotification.Name(rawValue : "continue"), object : nil)
-        notifCenter.addObserver(self, selector : #selector(self.playit(notification:)), name: NSNotification.Name(rawValue: "playit"), object: nil)
+//        notifCenter.addObserver(self, selector : #selector(self.playit(notification:)), name: NSNotification.Name(rawValue: "playit"), object: nil)
         notifCenter.addObserver(self, selector : #selector(self.playerDidFinishPlaying(note:)), name: NSNotification.Name(rawValue: "playerDidFinishPlaying"), object: nil)
         setUpSafeArea(size: self.view.frame.size)
     }

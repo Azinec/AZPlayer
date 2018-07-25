@@ -20,6 +20,7 @@
 		9961FD2A20DCE53E00A79E79 /* TestStreamUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9961FD2920DCE53E00A79E79 /* TestStreamUITests.swift */; };
 		9961FD3820DD033900A79E79 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9961FD3720DD033900A79E79 /* PlayerView.swift */; };
 		9961FD3A20DD035100A79E79 /* PlayerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9961FD3920DD035100A79E79 /* PlayerView.xib */; };
+		996DA34521087FAD0011425F /* camilacabello.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 996DA34421087FAD0011425F /* camilacabello.mp3 */; };
 		9971B24F20EE66CB00B5A128 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9971B24E20EE66CB00B5A128 /* AVFoundation.framework */; };
 		D8F518D0B73BE924CAF4E4BD /* Pods_TestStream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F44A95ABC559A31F21FE702A /* Pods_TestStream.framework */; };
 /* End PBXBuildFile section */
@@ -69,6 +70,8 @@
 		9961FD2B20DCE53E00A79E79 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9961FD3720DD033900A79E79 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		9961FD3920DD035100A79E79 /* PlayerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayerView.xib; sourceTree = "<group>"; };
+		996DA340210876C60011425F /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
+		996DA34421087FAD0011425F /* camilacabello.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = camilacabello.mp3; sourceTree = "<group>"; };
 		9971B24E20EE66CB00B5A128 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		B3C6B2D9E2AD51091853EDD1 /* Pods_TestStreamUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestStreamUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3373B28046586EB1E502E2F /* Pods_TestStreamTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestStreamTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -117,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				9961FD3920DD035100A79E79 /* PlayerView.xib */,
+				996DA34421087FAD0011425F /* camilacabello.mp3 */,
 				9961FD0D20DCE53C00A79E79 /* Main.storyboard */,
 				9961FD1020DCE53E00A79E79 /* Assets.xcassets */,
 				9961FD1220DCE53E00A79E79 /* LaunchScreen.storyboard */,
@@ -192,6 +196,7 @@
 		B59ADC558F8533E2E45C69E8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				996DA340210876C60011425F /* AVKit.framework */,
 				595F9FC220F7EEBE00A4C019 /* libz.tbd */,
 				595F9FBE20F7EEAD00A4C019 /* libc++.1.tbd */,
 				595F9FBC20F7EEAD00A4C019 /* libc++.tbd */,
@@ -320,6 +325,7 @@
 			files = (
 				9961FD1420DCE53E00A79E79 /* LaunchScreen.storyboard in Resources */,
 				9961FD1120DCE53E00A79E79 /* Assets.xcassets in Resources */,
+				996DA34521087FAD0011425F /* camilacabello.mp3 in Resources */,
 				9961FD0F20DCE53C00A79E79 /* Main.storyboard in Resources */,
 				9961FD3A20DD035100A79E79 /* PlayerView.xib in Resources */,
 			);

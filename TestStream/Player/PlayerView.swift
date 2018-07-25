@@ -7,9 +7,9 @@
 //
 
 import UIKit
+import AVFoundation
 
-
-class PlayerView: UIView {
+class PlayerView: UIView, AVAudioPlayerDelegate {
     
     enum PlayerStatus {
         case Playing
@@ -27,6 +27,10 @@ class PlayerView: UIView {
     
     static var shared = PlayerView()
     
+    var audioPlayer : AVAudioPlayer!
+    
+    let localURL : String? = Bundle.main.path(forResource: "camilacabello", ofType: "mp3")
+    
     @IBOutlet weak var indicatorView: UIView!
     
     @IBOutlet weak var controllerButton: UIButton!
@@ -35,7 +39,12 @@ class PlayerView: UIView {
     
     @IBOutlet weak var indicatorViewWidht: NSLayoutConstraint!
     
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
+    
+    
     weak var view: UIView!
+    
+    //    var spinner : UIActivityIndicatorView? = nil
     
     let notifCenter = NotificationCenter.default
     
@@ -71,23 +80,29 @@ class PlayerView: UIView {
     @IBAction func controllerTapped(_ sender: UIButton) {
         if !isDownloadedMedia && playerStatus == .Waiting {
             notifCenter.post(name: NSNotification.Name(rawValue: "download"), object: self)
+            controllerButton.setImage(nil, for: .normal)
+            spinner.isHidden = false
+            spinner.startAnimating()
+        } else {
+            self.playMusicF()
         }
         
-        if isDownloadedMedia && playerStatus == .Playing {
-            notifCenter.post(name: NSNotification.Name(rawValue: "pause"), object: self)
-            controllerButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
-        } else if isDownloadedMedia && playerStatus == .Paused {
-            notifCenter.post(name: NSNotification.Name(rawValue: "continue"), object: self)
-            controllerButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
-        }
+        //        if isDownloadedMedia && playerStatus == .Playing {
+        //            notifCenter.post(name: NSNotification.Name(rawValue: "pause"), object: self)
+        //            controllerButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
+        //        } else if isDownloadedMedia && playerStatus == .Paused {
+        //            notifCenter.post(name: NSNotification.Name(rawValue: "continue"), object: self)
+        //            controllerButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+        //        }
     }
     
     
     func setup() {
         self.view.layer.cornerRadius = self.view.frame.height / 2
         self.view.layer.cornerRadius = self.view.frame.height / 2
+        notifCenter.addObserver(self, selector : #selector(self.playMusicF), name: NSNotification.Name(rawValue: "playit"), object: nil)
+        spinner.isHidden = true
     }
-    
     
     func setProgress(progress:Float) {
         self.progress = progress
@@ -107,11 +122,72 @@ class PlayerView: UIView {
         setProgress(progress: self.progress + progress)
     }
     
+    var stoppedMusic = false
+    @objc func playMusicF() {
+        isDownloadedMedia = true
+        spinner.stopAnimating()
+        spinner.isHidden = true
+        
+        
+        if stoppedMusic || audioPlayer == nil {
+            if let urlPath = self.localURL {
+                if !stoppedMusic {
+                    do{
+                        audioPlayer = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: urlPath))
+                        audioPlayer.delegate = self
+                        audioPlayer.prepareToPlay()
+                        audioPlayer.play()
+                        playerStatus = .Playing
+                        controllerButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+                    }
+                    catch {
+                        print(error)
+                    }
+                } else {
+                    audioPlayer.play()
+                    playerStatus = .Playing
+                    controllerButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+                }
+                
+                self.stoppedMusic = false
+            }
+        } else {
+            audioPlayer.pause()
+            playerStatus = .Paused
+            controllerButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
+            self.stoppedMusic = true
+        }
+        
+    }
+    
+    
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        controllerButton.setImage(nil, for: .normal)
+        
+        spinner.isHidden = false
+        spinner.startAnimating()
+        
+        indicatirViewHeight.constant = 0.0
+        indicatorViewWidht.constant = 0.0
+        audioPlayer = nil
+        
+        playerStatus = .Waiting
+        isDownloadedMedia = false
+        
+        //add observer to delete the cached file
+        //change the flag isDownloadedMedia to false
+        //set the image "play" --> controllerButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
+    }
+    
+    
+    
+    
     
     
     
     
 }
+
 
 
 

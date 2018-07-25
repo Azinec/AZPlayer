@@ -32,8 +32,8 @@ extension PlayerViewController {
     }
     
     @objc func playit(notification:Notification) {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "playit"), object: nil)
-        
+//        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "playit"), object: nil)
+//        
         if let uI = notification.userInfo {
             if let name = uI["name"] as? String {
                 do {
@@ -96,7 +96,7 @@ extension PlayerViewController: JukeboxDelegate {
     }
     
     func jukeboxPlaybackProgressDidChange(_ jukebox: Jukebox) {
-        print("jukeboxPlaybackProgressDidChange")
+//        print("jukeboxPlaybackProgressDidChange")
     }
     
     func jukeboxDidLoadItem(_ jukebox: Jukebox, item: JukeboxItem) {

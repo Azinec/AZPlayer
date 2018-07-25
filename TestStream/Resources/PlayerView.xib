@@ -15,6 +15,7 @@
                 <outlet property="indicatirViewHeight" destination="BYg-7S-5vQ" id="ode-Tg-F6U"/>
                 <outlet property="indicatorView" destination="QZa-IK-tLO" id="w2z-4X-TdH"/>
                 <outlet property="indicatorViewWidht" destination="erz-IN-qG5" id="uNL-lX-FiA"/>
+                <outlet property="spinner" destination="WRH-Qw-wnd" id="VZ2-aH-KsO"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -24,6 +25,12 @@
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QZa-IK-tLO">
                     <rect key="frame" x="100" y="100" width="0.0" height="0.0"/>
+                    <subviews>
+                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="WRH-Qw-wnd">
+                            <rect key="frame" x="-10" y="-10" width="20" height="20"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </activityIndicatorView>
+                    </subviews>
                     <color key="backgroundColor" red="0.96620899438858032" green="0.30316817202223056" blue="0.2362600364971458" alpha="0.62466989436619713" colorSpace="custom" customColorSpace="displayP3"/>
                     <constraints>
                         <constraint firstAttribute="height" id="BYg-7S-5vQ"/>
