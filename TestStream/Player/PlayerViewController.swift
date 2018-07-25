@@ -15,19 +15,21 @@ class PlayerViewController: UIViewController, AVAudioPlayerDelegate {
     let baseUrl:String = "http://pubcache1.arkiva.de/test"
     let playlistUrl:String = "/hls_index.m3u8"
 //    var jukeBox:Jukebox? = nil
-    var recordingSession : AVAudioSession!
-    var pplayerVC = AVPlayerViewController()
-    var songPlayer = AVAudioPlayer()
-    var audioPlayer : AVAudioPlayer!
-    var videoPlayer:AVPlayer!
+//    var recordingSession : AVAudioSession!
+//    var pplayerVC = AVPlayerViewController()
+//    var songPlayer = AVAudioPlayer()
+//    var audioPlayer : AVAudioPlayer!
+//    var videoPlayer:AVPlayer!
     var filename : URL? = nil
     let playerView: PlayerView = PlayerView.shared
-    var playerTime : CMTime? = nil
+//    var playerTime : CMTime? = nil
     var pangesture = UIPanGestureRecognizer()
     var topSafeArea : CGFloat = 0.0
     var bottomSafeArea : CGFloat = 0.0
     var leftSafeArea : CGFloat = 0.0
     var rightSafeArea : CGFloat = 0.0
+    var offsetX : CGFloat = 0.0
+    var offsetY : CGFloat = 0.0
     var isIphoneX = false
     var iphoneXSafeArea : [String : CGFloat] = ["top" : 0.0, "bottom" : 0.0, "left" : 0.0, "right" : 0.0]
     var statusBarHeight : CGFloat = 0.0
@@ -76,8 +78,6 @@ class PlayerViewController: UIViewController, AVAudioPlayerDelegate {
     }
     
     
-    
-    
     @objc func playerViewDidDragged(_ sender:UIPanGestureRecognizer) {
         velocity = (abs(sender.velocity(in: self.view).x) + abs(sender.velocity(in: self.view).y)) / 1500
         if velocity > 1.5 {
@@ -90,11 +90,18 @@ class PlayerViewController: UIViewController, AVAudioPlayerDelegate {
             rewriteStartCoord = true
         }
         
-        let newPoint = pangesture.location(in: self.view)
+        var newPoint = pangesture.location(in: self.view)
         
-        if newPoint.x > self.leftSafeArea && newPoint.x < self.rightSafeArea && newPoint.y < self.bottomSafeArea && newPoint.y > self.topSafeArea {
-            playerView.center = newPoint
-            sender.setTranslation(newPoint, in: self.view)
+        if sender.state == .began {
+            offsetX = newPoint.x - playerView.center.x
+            offsetY = newPoint.y - playerView.center.y
+        }
+        
+        newPoint.x -= offsetX
+        newPoint.y -= offsetY
+       
+        if newPoint.x > self.leftSafeArea && newPoint.x < self.rightSafeArea && newPoint.y  < self.bottomSafeArea && newPoint.y > self.topSafeArea {
+                self.playerView.center = newPoint
         } else {
             if newPoint.x <= self.leftSafeArea {
                 playerView.center = CGPoint(x: self.leftSafeArea, y: newPoint.y)
@@ -159,7 +166,6 @@ class PlayerViewController: UIViewController, AVAudioPlayerDelegate {
                     if self.startCoord["y"]! < self.topSafeArea + swipeLimit && (abs(pangesture.location(in: self.view).y - self.startCoord["y"]!)) < swipeLimit {
                         up = true
                     }
-                    
                     
                     if up {
                         if left {

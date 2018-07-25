@@ -66,11 +66,11 @@ extension PlayerViewController {
     
     @objc func playerDidFinishPlaying(note: NSNotification) {
         downloaded = false
-        playerTime = nil
+//        playerTime = nil
         playerView.indicatirViewHeight.constant = 0.0
         playerView.indicatorViewWidht.constant = 0.0
         playerView.controllerButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
-        videoPlayer = nil
+//        videoPlayer = nil
     }
     
 //    @objc func statusChanged () {
