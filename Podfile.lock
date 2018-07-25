@@ -1,20 +1,16 @@
 PODS:
-  - Jukebox (0.2.1)
   - M3U8Kit (0.2.3)
 
 DEPENDENCIES:
-  - Jukebox
   - M3U8Kit
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - Jukebox
     - M3U8Kit
 
 SPEC CHECKSUMS:
-  Jukebox: 81db618ccd3a1cc9b154f4ae0f5c4b54638666dd
   M3U8Kit: 1a5720b2b3584750a66ae5e2f78d83c3149a0165
 
-PODFILE CHECKSUM: cc831371c0073f31047da7efe2f6ff7e69e7eb78
+PODFILE CHECKSUM: 225559bee16524b380f7694ef87ab5a56890a5f6
 
 COCOAPODS: 1.5.3

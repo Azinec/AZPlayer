@@ -355,12 +355,10 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-TestStream/Pods-TestStream-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Jukebox/Jukebox.framework",
 				"${BUILT_PRODUCTS_DIR}/M3U8Kit/M3U8Kit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Jukebox.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/M3U8Kit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
