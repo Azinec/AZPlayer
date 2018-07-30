@@ -36,12 +36,31 @@ class PlayerViewController: UIViewController, AVAudioPlayerDelegate {
     
     
     override func viewDidLoad() {
-        super.viewDidLoad()        playerView.frame = CGRect(x: 0.0, y: 0.0, width: 100, height: 100)
+        super.viewDidLoad()
+        playerView.frame = CGRect(x: 0.0, y: 0.0, width: 100, height: 100)
         playerView.center = self.view.center
         self.view.addSubview(playerView)
         self.pangesture = UIPanGestureRecognizer.init(target: self, action: #selector(playerViewDidDragged(_:)))
         self.playerView.addGestureRecognizer(self.pangesture)
         playerView.setup()
+        
+        
+        
+        let urlM3U8 = URL(string: "http://pubcache1.arkiva.de/test/hls_index.m3u8")!
+        
+        let task = URLSession.shared.dataTask(with: urlM3U8) { (data, response, error) in
+            if error != nil {
+                print(error)
+            } else {
+                let htmlContent = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+                print(htmlContent)
+                print(htmlContent?.components(separatedBy: "#")[2])
+            }
+//            task.re
+        }
+        task.resume()
+        
+        
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
