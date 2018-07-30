@@ -9,18 +9,15 @@
 import Foundation
 import AVKit
 import AVFoundation
-//import Jukebox
 
 extension PlayerViewController {
     
     @objc func play () {
-        
-        
-        
-        PlaylistManager(url: "http://pubcache1.arkiva.de/test/hls_a192K_v4.m3u8").fetchPlaylist()
-        
-        //        PlaylistManager(url: baseUrl+playlistUrl).fetchPlaylist()
-        print(baseUrl+playlistUrl)
+        self.getHtmlContent { (url, status) in
+            if status{
+                PlaylistManager(url: url).fetchPlaylist(url : url)
+            }
+        }
     }
     
     //    @objc func pause() {
@@ -117,5 +114,6 @@ extension PlayerViewController {
 //
 //
 //}
+
 
 

@@ -29,9 +29,9 @@ class PlaylistManager: NSObject {
     }
     
     
-    func fetchPlaylist() {
+    func fetchPlaylist(url : String) {
         
-        let downloader = DataDownloader(with: URL(string: "http://pubcache1.arkiva.de/test/hls_a256K.ts")!)
+        let downloader = DataDownloader(with: URL(string: url)!)
         downloader.startDownload(tempName: "\(NSDate().timeIntervalSince1970)")
         //        do {
         //            if let playlist = try M3U8PlaylistModel(url: baseUrl).audioPl {
@@ -191,4 +191,5 @@ extension DataDownloader: URLSessionDelegate, URLSessionDownloadDelegate, URLSes
     }
     
 }
+
 

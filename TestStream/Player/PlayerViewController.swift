@@ -11,8 +11,9 @@ import AVKit
 import AVFoundation
 
 class PlayerViewController: UIViewController, AVAudioPlayerDelegate {
-    let baseUrl:String = "http://pubcache1.arkiva.de/test"
-    let playlistUrl:String = "/hls_index.m3u8"
+    let urlM3U8 = URL(string: "http://pubcache1.arkiva.de/test/hls_index.m3u8")!
+    let baseUrl:String = "http://pubcache1.arkiva.de/test/"
+    var playlistUrl:String = ""
     var filename : URL? = nil
     let playerView: PlayerView = PlayerView.shared
     var pangesture = UIPanGestureRecognizer()
@@ -34,7 +35,7 @@ class PlayerViewController: UIViewController, AVAudioPlayerDelegate {
     
     
     
-    
+    var audioURL : [String] = []
     override func viewDidLoad() {
         super.viewDidLoad()
         playerView.frame = CGRect(x: 0.0, y: 0.0, width: 100, height: 100)
@@ -43,24 +44,58 @@ class PlayerViewController: UIViewController, AVAudioPlayerDelegate {
         self.pangesture = UIPanGestureRecognizer.init(target: self, action: #selector(playerViewDidDragged(_:)))
         self.playerView.addGestureRecognizer(self.pangesture)
         playerView.setup()
-        
-        
-        
-        let urlM3U8 = URL(string: "http://pubcache1.arkiva.de/test/hls_index.m3u8")!
+    }
+    
+    
+    
+    func getHtmlContent(callback:@escaping (_ result:String, _ stautus:Bool) -> ()) {
         
         let task = URLSession.shared.dataTask(with: urlM3U8) { (data, response, error) in
             if error != nil {
                 print(error)
+                callback("", false)
             } else {
                 let htmlContent = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-                print(htmlContent)
-                print(htmlContent?.components(separatedBy: "#")[2])
+                let arrayHtmlContent = htmlContent?.components(separatedBy: "#")
+                for item in arrayHtmlContent! {
+                    if item.contains("MEDIA:TYPE=AUDIO") {
+                        self.audioURL.append(item)
+                    }
+                }
+                let highestQuality = self.chooseTheHighestQuality()
+                if highestQuality != "" {
+                    callback(self.baseUrl + highestQuality, true)
+                }
             }
-//            task.re
         }
         task.resume()
-        
-        
+    }
+    
+    func chooseTheHighestQuality() -> String {
+        var URIArray : [String] = []
+        var qualityArray : [String] = []
+        var quality : Int = 0
+        var highestQualityIndex = 0
+        if self.audioURL.count > 0 {
+            for item in self.audioURL {
+                var cuttedItem = item.components(separatedBy: ",").last!.components(separatedBy: "_")[1]
+                cuttedItem.remove(at: cuttedItem.index(before: cuttedItem.endIndex))
+                cuttedItem.remove(at: cuttedItem.startIndex)
+                qualityArray.append(cuttedItem)
+                var URI = item.components(separatedBy: "URI=\"").last!.components(separatedBy: ".").first!
+                URIArray.append("\(URI.components(separatedBy: "_").first!)_\(URI.components(separatedBy: "_")[1]).ts")
+            }
+            
+            for i in 0..<qualityArray.count {
+                if Int(qualityArray[i])! > quality {
+                    quality = Int(qualityArray[i])!
+                    highestQualityIndex = i
+                }
+            }
+            self.playlistUrl = URIArray[highestQualityIndex]
+            return URIArray[highestQualityIndex]
+        }
+        return ""
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -193,8 +228,5 @@ class PlayerViewController: UIViewController, AVAudioPlayerDelegate {
             }
         }
     }
-    
 }
-
-
 
