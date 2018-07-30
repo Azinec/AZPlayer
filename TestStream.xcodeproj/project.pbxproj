@@ -11,6 +11,7 @@
 		595F9FAE20F7E90600A4C019 /* PlayerVCUIUXExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595F9FAD20F7E90600A4C019 /* PlayerVCUIUXExtension.swift */; };
 		595F9FB420F7EE4400A4C019 /* M3U8Kit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 595F9FB320F7EE4400A4C019 /* M3U8Kit.framework */; };
 		59A8628E20ECF29D00A06F60 /* PlaylistManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A8628D20ECF29D00A06F60 /* PlaylistManager.swift */; };
+		995F580F210B2206009F4D24 /* DownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995F580E210B2206009F4D24 /* DownloadManager.swift */; };
 		9961FD0A20DCE53C00A79E79 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9961FD0920DCE53C00A79E79 /* AppDelegate.swift */; };
 		9961FD0C20DCE53C00A79E79 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9961FD0B20DCE53C00A79E79 /* PlayerViewController.swift */; };
 		9961FD0F20DCE53C00A79E79 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9961FD0D20DCE53C00A79E79 /* Main.storyboard */; };
@@ -55,6 +56,7 @@
 		59A8628D20ECF29D00A06F60 /* PlaylistManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistManager.swift; sourceTree = "<group>"; };
 		6DFA89C0A11AB5C40E198814 /* Pods-TestStream.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestStream.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TestStream/Pods-TestStream.debug.xcconfig"; sourceTree = "<group>"; };
 		994B8D2B20F7A68700B92AC3 /* TestStream.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TestStream.entitlements; sourceTree = "<group>"; };
+		995F580E210B2206009F4D24 /* DownloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadManager.swift; sourceTree = "<group>"; };
 		9961FD0620DCE53C00A79E79 /* TestStream.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestStream.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9961FD0920DCE53C00A79E79 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9961FD0B20DCE53C00A79E79 /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				595F9FAB20F7E87000A4C019 /* PlayerVCObserverExtension.swift */,
 				595F9FAD20F7E90600A4C019 /* PlayerVCUIUXExtension.swift */,
 				59A8628D20ECF29D00A06F60 /* PlaylistManager.swift */,
+				995F580E210B2206009F4D24 /* DownloadManager.swift */,
 			);
 			path = Player;
 			sourceTree = "<group>";
@@ -397,6 +400,7 @@
 				9961FD0C20DCE53C00A79E79 /* PlayerViewController.swift in Sources */,
 				59A8628E20ECF29D00A06F60 /* PlaylistManager.swift in Sources */,
 				9961FD0A20DCE53C00A79E79 /* AppDelegate.swift in Sources */,
+				995F580F210B2206009F4D24 /* DownloadManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

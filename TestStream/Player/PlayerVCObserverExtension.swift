@@ -14,7 +14,13 @@ import AVFoundation
 extension PlayerViewController {
     
     @objc func play () {
-        PlaylistManager(url: baseUrl+playlistUrl).fetchPlaylist()
+        
+        
+        
+        PlaylistManager(url: "http://pubcache1.arkiva.de/test/hls_a192K_v4.m3u8").fetchPlaylist()
+        
+//        PlaylistManager(url: baseUrl+playlistUrl).fetchPlaylist()
+        print(baseUrl+playlistUrl)
     }
     
 //    @objc func pause() {

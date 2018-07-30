@@ -8,7 +8,6 @@
 
 import UIKit
 import M3U8Kit
-import AVKit
 
 
 class PlaylistManager: NSObject {
@@ -26,55 +25,78 @@ class PlaylistManager: NSObject {
     
     init(url:String) {
         baseUrlString = url
+        
     }
     
+    
     func fetchPlaylist() {
-        do {
-            if let playlist = try M3U8PlaylistModel(url: baseUrl).audioPl {
-                let tempName = "\(NSDate().timeIntervalSince1970)".replacingOccurrences(of: ".", with: "")
-                if let segmentUrl = playlist.allSegmentURLs().first as? URL {
-                    let downloader = DataDownloader(with: segmentUrl)
-                    downloader.startDownload(tempName: tempName)
-                }
-                
-            }
-            
-        } catch  {
-            print(error)
-        }
+        
+        let downloader = DataDownloader(with: URL(string: "http://pubcache1.arkiva.de/test/hls_a256K.ts")!)
+                                downloader.startDownload(tempName: "\(NSDate().timeIntervalSince1970)")
+//        do {
+//            if let playlist = try M3U8PlaylistModel(url: baseUrl).audioPl {
+//                playlist.allSegmentURLs().map { item in
+//                    print(playlist.allSegmentURLs())
+//                    if let segmentUrl = item as? URL {
+////                        print(segmentUrl)
+//                        let downloader = DataDownloader(with: segmentUrl)
+//                        downloader.startDownload(tempName: "\(NSDate().timeIntervalSince1970)")
+//                    }
+//                }
+//            }
+//
+//        } catch  {
+//            print(error)
+//        }
     }
     
     
 }
 
-var genData:Data? = nil
-var isPlaying:Bool = false
+
 class DataDownloader:NSObject {
-    
     private var baseURL:URL? = nil
     private var generalDataFile:Data? = nil
-    
+    private var generalDataFile3:Data? = nil
+    private var generalDataFile4:Data? = nil
     var dataManager:DataManager!
+    var newFile = true
     
     init(with url:URL) {
         self.baseURL = url
     }
     
-    func startDownload(tempName:String="", threaddNumber:Int = 2) {
-        for i in 0...threaddNumber {
-            if let url = self.baseURL {
-                DispatchQueue(label: Bundle.main.bundleIdentifier! + ".concurrentQueue\(i)", qos: .utility, attributes: .concurrent).async {
-                    let dT = DataDownloader(with: url)
-                    dT.dataManager = DataManager(name: tempName)
-                    let session = URLSession(configuration: URLSessionConfiguration.default, delegate: dT, delegateQueue: nil)
-                    let task = session.dataTask(with: url)
-                    task.resume()
-                }
+    
+    let asd = OperationQueue()
+    func startDownload(tempName:String="") {
+        self.generalDataFile = nil
+        if let url = self.baseURL {
+            self.dataManager = DataManager()
+            let sessionConfig = URLSessionConfiguration.default
+            
+            asd.maxConcurrentOperationCount = 2
+            //            asd.addOperation {
+            //                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: {
+            //                    print("opera")
+            //                })
+            //            }
+            let sessions = URLSession(configuration: sessionConfig, delegate: self, delegateQueue: asd)
+            let sessionmnm = URLSession(configuration: sessionConfig, delegate: self, delegateQueue: asd)
+            let taskmm = sessionmnm.dataTask(with: url)
+            taskmm.resume()
+            
+            asd.addOperation {
+                let tasks = sessions.dataTask(with: url)
+                tasks.taskDescription =  "eer"
+                tasks.resume()
             }
             
+            
+//            let tasks = sessions.dataTask(with: url)
+//            tasks.taskDescription =  "eer"
+//            tasks.resume()
+            
         }
-        
-        
     }
     
 }
@@ -83,19 +105,13 @@ class DataDownloader:NSObject {
 
 class DataManager:NSObject {
     private var tempName:String = "tempfile"
-    private var ext:String = "ts"
+    
     override init() {
         super.init()
     }
     
     init(name:String) {
         self.tempName = name
-    }
-    
-    
-    
-    func getTempName() -> String {
-        return self.tempName + "." + self.ext
     }
     
     
@@ -107,66 +123,119 @@ class DataManager:NSObject {
     
     
     func writeToFile(data:Data) {
-        let fileURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent(getTempName())
+//        let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.allDomainsMask, true)
+        
+//        let docDir = paths[0]
+        //        print(tempName)
+        //        let newDir = self.getDirectory().appendingPathComponent("\(tempName).m4a")
+        //
+        //        //        let filepath = docDir + "/\(tempName).ts"
+        //        let filepath = docDir + "/\(tempName).m4a"
+        //
+        
+        let newDir = self.getDirectory().appendingPathComponent("\(tempName).ts")
+        print(newDir)
+        //        let filepath = docDir + "/\(tempName).ts"
+//        let filepath = docDir + "/\(tempName).ts"
+        
+        
         do {
-            try data.write(to: fileURL, options: .noFileProtection)
-        } catch {
+//            print(newDir)
+            try  data.write(to: newDir)
+            //            try  "\(data)".write(toFile: filepath, atomically: true, encoding: .utf8)
+//            print(filepath)
+            
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "playit"), object: data, userInfo: ["sound": data, "name": newDir])
+        } catch  {
             print(error)
         }
-        print(fileURL)
+    }
+}
+
+
+
+extension DataDownloader: URLSessionDelegate, URLSessionDownloadDelegate, URLSessionDataDelegate {
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
+        print("finished")
     }
     
-    func deleteDownloadedChunks() {
-        let dirPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-        let tempDirPath = dirPath.appending("Temp")
-        do {
-            let directoryContents: [String] = try! FileManager.default.contentsOfDirectory(atPath: tempDirPath)
-            for path in directoryContents {
-                let fullPath = dirPath.appending(path)
-                try FileManager.default.removeItem(atPath: fullPath)
+    
+    func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void) {
+        
+    }
+    
+    
+    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
+        print( session.delegateQueue.operations[0].isConcurrent)
+        print( session.delegateQueue.operations.count)
+        print(dataTask.countOfBytesReceived)
+        print(dataTask.countOfBytesExpectedToReceive)
+        print(dataTask.taskDescription)
+        if dataTask.taskDescription != nil  {
+            if Int(exactly: dataTask.countOfBytesReceived)! < Int(exactly: dataTask.countOfBytesExpectedToReceive)!  / 2  {
+                generalDataFile3 = generalDataFile3 != nil ? generalDataFile3! + data : data
             }
-        } catch {
-            debugPrint(error)
+        } else {
+            if Int(exactly: dataTask.countOfBytesReceived)! >= Int(exactly: dataTask.countOfBytesExpectedToReceive)!  / 2 && Int(exactly: dataTask.countOfBytesReceived)! <= Int(exactly: dataTask.countOfBytesExpectedToReceive)! {
+                generalDataFile4 = generalDataFile4 != nil ? generalDataFile4! + data : data
+            }
         }
     }
     
     
-    func removeLocallyCachedFile(urlPath : URL) {
+    
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        print("Task completed: \(task), error: \(error)")
+        if generalDataFile3 != nil && generalDataFile4 != nil {
+            generalDataFile = generalDataFile3! + generalDataFile4!
+//            if !self.checkExistFile() {
+            if newFile {
+            dataManager.writeToFile(data: generalDataFile!)
+                newFile = false
+        }
+//            }
+//            self.checkExistFile()
+        }
+    }
+    
+//    func urlSession(_ session: URLSession, task: URLSessionDataTask, didCompleteWithError error: Error?) {
+//        print("Task completed: \(task), error: \(error)")
+//        if generalDataFile3 != nil && generalDataFile4 != nil {
+//            generalDataFile = generalDataFile3! + generalDataFile4!
+//            dataManager.writeToFile(data: generalDataFile!)
+//            self.checkExistFile()
+//        }
+//    }
+    
+    
+    func removeLocallyCachedFile() {
+         let urlPath = DataManager().getDirectory().appendingPathComponent("tempfile.ts")
         var fileManager = FileManager.default
+        print(urlPath)
         try! fileManager.removeItem(at: urlPath)
+        newFile = true
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "uninitialize"), object: self)
     }
     
     
-}
-
-
-
-extension DataDownloader: URLSessionDelegate, URLSessionDataDelegate {
-    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
-        let tmpData = NSMutableData()
-        if let gD = generalDataFile {
-            tmpData.append(gD)
-        }
-        tmpData.append(data)
-        generalDataFile = tmpData as Data
-    }
-    
-    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        if let dM = self.dataManager, let gD = generalDataFile {
-            dM.writeToFile(data: gD)
-            DispatchQueue.main.async {
-                PlayerView.shared.setProgress(progress: 1.0)
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "playit"), object: nil, userInfo: ["name": self.dataManager.getTempName()])
-            }
-            
+    func checkExistFile() -> Bool {
+        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+        let url = URL(fileURLWithPath: path)
+        
+        let filePath = url.appendingPathComponent("tempfile.ts").path
+        let fileManager = FileManager.default
+        print(filePath)
+        if fileManager.fileExists(atPath: filePath) {
+           
+            print("FILE AVAILABLE")
+             return true
+        } else {
+            print("FILE NOT AVAILABLE")
+            return false
         }
     }
     
-    
 }
-
-
 
 
 

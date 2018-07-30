@@ -87,6 +87,10 @@ class PlayerView: UIView, AVAudioPlayerDelegate {
             self.playMusicF()
         }
         
+        
+        
+//        DownloadManager().startDownloadD()
+        
         //        if isDownloadedMedia && playerStatus == .Playing {
         //            notifCenter.post(name: NSNotification.Name(rawValue: "pause"), object: self)
         //            controllerButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
@@ -163,6 +167,8 @@ class PlayerView: UIView, AVAudioPlayerDelegate {
     
     @objc func changeToUninitializedState() {
         self.isDownloadedMedia = false
+        spinner.isHidden = true
+        spinner.stopAnimating()
         controllerButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
     }
     
@@ -178,6 +184,8 @@ class PlayerView: UIView, AVAudioPlayerDelegate {
         
         playerStatus = .Waiting
         isDownloadedMedia = false
+        
+        DataDownloader(with: URL(string: "http://pubcache1.arkiva.de/test/hls_a256K.ts")!).removeLocallyCachedFile()
         
         //add observer to delete the cached file
         //change the flag isDownloadedMedia to false
