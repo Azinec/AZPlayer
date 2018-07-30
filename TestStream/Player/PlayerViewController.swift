@@ -9,20 +9,12 @@
 import UIKit
 import AVKit
 import AVFoundation
-//import Jukebox
 
 class PlayerViewController: UIViewController, AVAudioPlayerDelegate {
     let baseUrl:String = "http://pubcache1.arkiva.de/test"
     let playlistUrl:String = "/hls_index.m3u8"
-//    var jukeBox:Jukebox? = nil
-//    var recordingSession : AVAudioSession!
-//    var pplayerVC = AVPlayerViewController()
-//    var songPlayer = AVAudioPlayer()
-//    var audioPlayer : AVAudioPlayer!
-//    var videoPlayer:AVPlayer!
     var filename : URL? = nil
     let playerView: PlayerView = PlayerView.shared
-//    var playerTime : CMTime? = nil
     var pangesture = UIPanGestureRecognizer()
     var topSafeArea : CGFloat = 0.0
     var bottomSafeArea : CGFloat = 0.0
@@ -44,9 +36,7 @@ class PlayerViewController: UIViewController, AVAudioPlayerDelegate {
     
     
     override func viewDidLoad() {
-        super.viewDidLoad()
-
-        playerView.frame = CGRect(x: 0.0, y: 0.0, width: 100, height: 100)
+        super.viewDidLoad()        playerView.frame = CGRect(x: 0.0, y: 0.0, width: 100, height: 100)
         playerView.center = self.view.center
         self.view.addSubview(playerView)
         self.pangesture = UIPanGestureRecognizer.init(target: self, action: #selector(playerViewDidDragged(_:)))
@@ -70,10 +60,10 @@ class PlayerViewController: UIViewController, AVAudioPlayerDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         notifCenter.addObserver(self, selector : #selector(self.play), name : NSNotification.Name(rawValue : "download"), object : nil)
-//        notifCenter.addObserver(self, selector : #selector(self.pause), name : NSNotification.Name(rawValue : "pause"), object : nil)
-//        notifCenter.addObserver(self, selector : #selector(self.continuePlaying), name : NSNotification.Name(rawValue : "continue"), object : nil)
-//        notifCenter.addObserver(self, selector : #selector(self.playit(notification:)), name: NSNotification.Name(rawValue: "playit"), object: nil)
-//        notifCenter.addObserver(self, selector : #selector(self.playerDidFinishPlaying(note:)), name: NSNotification.Name(rawValue: "playerDidFinishPlaying"), object: nil)
+        //        notifCenter.addObserver(self, selector : #selector(self.pause), name : NSNotification.Name(rawValue : "pause"), object : nil)
+        //        notifCenter.addObserver(self, selector : #selector(self.continuePlaying), name : NSNotification.Name(rawValue : "continue"), object : nil)
+        //        notifCenter.addObserver(self, selector : #selector(self.playit(notification:)), name: NSNotification.Name(rawValue: "playit"), object: nil)
+        //        notifCenter.addObserver(self, selector : #selector(self.playerDidFinishPlaying(note:)), name: NSNotification.Name(rawValue: "playerDidFinishPlaying"), object: nil)
         setUpSafeArea(size: self.view.frame.size)
     }
     
@@ -99,9 +89,9 @@ class PlayerViewController: UIViewController, AVAudioPlayerDelegate {
         
         newPoint.x -= offsetX
         newPoint.y -= offsetY
-       
+        
         if newPoint.x > self.leftSafeArea && newPoint.x < self.rightSafeArea && newPoint.y  < self.bottomSafeArea && newPoint.y > self.topSafeArea {
-                self.playerView.center = newPoint
+            self.playerView.center = newPoint
         } else {
             if newPoint.x <= self.leftSafeArea {
                 playerView.center = CGPoint(x: self.leftSafeArea, y: newPoint.y)
@@ -183,10 +173,9 @@ class PlayerViewController: UIViewController, AVAudioPlayerDelegate {
                 }
             }
         }
-        
-        
     }
     
 }
+
 
 

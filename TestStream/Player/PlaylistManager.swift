@@ -32,22 +32,22 @@ class PlaylistManager: NSObject {
     func fetchPlaylist() {
         
         let downloader = DataDownloader(with: URL(string: "http://pubcache1.arkiva.de/test/hls_a256K.ts")!)
-                                downloader.startDownload(tempName: "\(NSDate().timeIntervalSince1970)")
-//        do {
-//            if let playlist = try M3U8PlaylistModel(url: baseUrl).audioPl {
-//                playlist.allSegmentURLs().map { item in
-//                    print(playlist.allSegmentURLs())
-//                    if let segmentUrl = item as? URL {
-////                        print(segmentUrl)
-//                        let downloader = DataDownloader(with: segmentUrl)
-//                        downloader.startDownload(tempName: "\(NSDate().timeIntervalSince1970)")
-//                    }
-//                }
-//            }
-//
-//        } catch  {
-//            print(error)
-//        }
+        downloader.startDownload(tempName: "\(NSDate().timeIntervalSince1970)")
+        //        do {
+        //            if let playlist = try M3U8PlaylistModel(url: baseUrl).audioPl {
+        //                playlist.allSegmentURLs().map { item in
+        //                    print(playlist.allSegmentURLs())
+        //                    if let segmentUrl = item as? URL {
+        ////                        print(segmentUrl)
+        //                        let downloader = DataDownloader(with: segmentUrl)
+        //                        downloader.startDownload(tempName: "\(NSDate().timeIntervalSince1970)")
+        //                    }
+        //                }
+        //            }
+        //
+        //        } catch  {
+        //            print(error)
+        //        }
     }
     
     
@@ -61,7 +61,6 @@ class DataDownloader:NSObject {
     private var generalDataFile4:Data? = nil
     var dataManager:DataManager!
     var newFile = true
-    
     init(with url:URL) {
         self.baseURL = url
     }
@@ -73,13 +72,7 @@ class DataDownloader:NSObject {
         if let url = self.baseURL {
             self.dataManager = DataManager()
             let sessionConfig = URLSessionConfiguration.default
-            
             asd.maxConcurrentOperationCount = 2
-            //            asd.addOperation {
-            //                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: {
-            //                    print("opera")
-            //                })
-            //            }
             let sessions = URLSession(configuration: sessionConfig, delegate: self, delegateQueue: asd)
             let sessionmnm = URLSession(configuration: sessionConfig, delegate: self, delegateQueue: asd)
             let taskmm = sessionmnm.dataTask(with: url)
@@ -90,12 +83,6 @@ class DataDownloader:NSObject {
                 tasks.taskDescription =  "eer"
                 tasks.resume()
             }
-            
-            
-//            let tasks = sessions.dataTask(with: url)
-//            tasks.taskDescription =  "eer"
-//            tasks.resume()
-            
         }
     }
     
@@ -123,28 +110,10 @@ class DataManager:NSObject {
     
     
     func writeToFile(data:Data) {
-//        let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.allDomainsMask, true)
-        
-//        let docDir = paths[0]
-        //        print(tempName)
-        //        let newDir = self.getDirectory().appendingPathComponent("\(tempName).m4a")
-        //
-        //        //        let filepath = docDir + "/\(tempName).ts"
-        //        let filepath = docDir + "/\(tempName).m4a"
-        //
-        
         let newDir = self.getDirectory().appendingPathComponent("\(tempName).ts")
         print(newDir)
-        //        let filepath = docDir + "/\(tempName).ts"
-//        let filepath = docDir + "/\(tempName).ts"
-        
-        
         do {
-//            print(newDir)
             try  data.write(to: newDir)
-            //            try  "\(data)".write(toFile: filepath, atomically: true, encoding: .utf8)
-//            print(filepath)
-            
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "playit"), object: data, userInfo: ["sound": data, "name": newDir])
         } catch  {
             print(error)
@@ -188,28 +157,15 @@ extension DataDownloader: URLSessionDelegate, URLSessionDownloadDelegate, URLSes
         print("Task completed: \(task), error: \(error)")
         if generalDataFile3 != nil && generalDataFile4 != nil {
             generalDataFile = generalDataFile3! + generalDataFile4!
-//            if !self.checkExistFile() {
             if newFile {
-            dataManager.writeToFile(data: generalDataFile!)
+                dataManager.writeToFile(data: generalDataFile!)
                 newFile = false
-        }
-//            }
-//            self.checkExistFile()
+            }
         }
     }
     
-//    func urlSession(_ session: URLSession, task: URLSessionDataTask, didCompleteWithError error: Error?) {
-//        print("Task completed: \(task), error: \(error)")
-//        if generalDataFile3 != nil && generalDataFile4 != nil {
-//            generalDataFile = generalDataFile3! + generalDataFile4!
-//            dataManager.writeToFile(data: generalDataFile!)
-//            self.checkExistFile()
-//        }
-//    }
-    
-    
     func removeLocallyCachedFile() {
-         let urlPath = DataManager().getDirectory().appendingPathComponent("tempfile.ts")
+        let urlPath = DataManager().getDirectory().appendingPathComponent("tempfile.ts")
         var fileManager = FileManager.default
         print(urlPath)
         try! fileManager.removeItem(at: urlPath)
@@ -226,9 +182,8 @@ extension DataDownloader: URLSessionDelegate, URLSessionDownloadDelegate, URLSes
         let fileManager = FileManager.default
         print(filePath)
         if fileManager.fileExists(atPath: filePath) {
-           
             print("FILE AVAILABLE")
-             return true
+            return true
         } else {
             print("FILE NOT AVAILABLE")
             return false
@@ -236,12 +191,4 @@ extension DataDownloader: URLSessionDelegate, URLSessionDownloadDelegate, URLSes
     }
     
 }
-
-
-
-
-
-
-
-
 

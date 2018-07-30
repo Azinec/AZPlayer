@@ -9,7 +9,7 @@
 import Foundation
 import AVKit
 import AVFoundation
-    
+
 
 extension PlayerViewController {
     
@@ -83,7 +83,7 @@ extension PlayerViewController {
     
     func movePlayerToEdge (coordinates : CGPoint) {
         let distance = sqrt(pow(abs(self.startCoord["x"]! - coordinates.x), 2) + pow(abs(self.startCoord["y"]! - coordinates.y), 2))
-        let time = Double (distance / velocity / 230) 
+        let time = Double (distance / velocity / 230)
         UIView.animate(withDuration: time, delay: 0, options: [.curveEaseInOut], animations: {
             self.playerView.center = CGPoint(x: coordinates.x, y: coordinates.y)
             
@@ -92,3 +92,4 @@ extension PlayerViewController {
     
     
 }
+

@@ -41,10 +41,7 @@ class PlayerView: UIView, AVAudioPlayerDelegate {
     
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     
-    
     weak var view: UIView!
-    
-    //    var spinner : UIActivityIndicatorView? = nil
     
     let notifCenter = NotificationCenter.default
     
@@ -89,7 +86,7 @@ class PlayerView: UIView, AVAudioPlayerDelegate {
         
         
         
-//        DownloadManager().startDownloadD()
+        //        DownloadManager().startDownloadD()
         
         //        if isDownloadedMedia && playerStatus == .Playing {
         //            notifCenter.post(name: NSNotification.Name(rawValue: "pause"), object: self)
@@ -191,17 +188,5 @@ class PlayerView: UIView, AVAudioPlayerDelegate {
         //change the flag isDownloadedMedia to false
         //set the image "play" --> controllerButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
     }
-    
-    
-    
-    
-    
-    
-    
-    
 }
-
-
-
-
 
