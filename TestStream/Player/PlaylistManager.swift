@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import M3U8Kit
 
 
 class PlaylistManager: NSObject {
@@ -72,7 +71,7 @@ class DataDownloader:NSObject {
         if let url = self.baseURL {
             self.dataManager = DataManager()
             let sessionConfig = URLSessionConfiguration.default
-            asd.maxConcurrentOperationCount = 2
+            asd.maxConcurrentOperationCount = 5
             let sessions = URLSession(configuration: sessionConfig, delegate: self, delegateQueue: asd)
             let sessionmnm = URLSession(configuration: sessionConfig, delegate: self, delegateQueue: asd)
             let taskmm = sessionmnm.dataTask(with: url)
@@ -111,7 +110,6 @@ class DataManager:NSObject {
     
     func writeToFile(data:Data) {
         let newDir = self.getDirectory().appendingPathComponent("\(tempName).ts")
-        print(newDir)
         do {
             try  data.write(to: newDir)
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "playit"), object: data, userInfo: ["sound": data, "name": newDir])
@@ -127,15 +125,16 @@ extension DataDownloader: URLSessionDelegate, URLSessionDownloadDelegate, URLSes
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         print("finished")
     }
-    
-    
+
+
     func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void) {
-        
+
     }
     
     
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
         print( session.delegateQueue.operations[0].isConcurrent)
+        print(session.delegateQueue.operations)
         print( session.delegateQueue.operations.count)
         print(dataTask.countOfBytesReceived)
         print(dataTask.countOfBytesExpectedToReceive)
@@ -150,7 +149,6 @@ extension DataDownloader: URLSessionDelegate, URLSessionDownloadDelegate, URLSes
             }
         }
     }
-    
     
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {

@@ -78,8 +78,10 @@ class PlayerView: UIView, AVAudioPlayerDelegate {
         if !isDownloadedMedia && playerStatus == .Waiting {
             notifCenter.post(name: NSNotification.Name(rawValue: "download"), object: self)
             controllerButton.setImage(nil, for: .normal)
+            controllerButton.isUserInteractionEnabled = false
             spinner.isHidden = false
             spinner.startAnimating()
+            
         } else {
             self.playMusicF()
         }
@@ -127,10 +129,12 @@ class PlayerView: UIView, AVAudioPlayerDelegate {
     var stoppedMusic = false
     @objc func playMusicF() {
         isDownloadedMedia = true
-        spinner.stopAnimating()
-        spinner.isHidden = true
-        
-        
+        DispatchQueue.main.async {
+            self.controllerButton.isUserInteractionEnabled = true
+            self.spinner.stopAnimating()
+            self.spinner.isHidden = true
+        }
+      
         if stoppedMusic || audioPlayer == nil {
             if let urlPath = self.localURL {
                 if !stoppedMusic {
@@ -140,7 +144,9 @@ class PlayerView: UIView, AVAudioPlayerDelegate {
                         audioPlayer.prepareToPlay()
                         audioPlayer.play()
                         playerStatus = .Playing
-                        controllerButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+                          DispatchQueue.main.async {
+                            self.controllerButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+                        }
                     }
                     catch {
                         print(error)
@@ -148,7 +154,9 @@ class PlayerView: UIView, AVAudioPlayerDelegate {
                 } else {
                     audioPlayer.play()
                     playerStatus = .Playing
-                    controllerButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+                      DispatchQueue.main.async {
+                        self.controllerButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+                    }
                 }
                 
                 self.stoppedMusic = false
@@ -156,7 +164,9 @@ class PlayerView: UIView, AVAudioPlayerDelegate {
         } else {
             audioPlayer.pause()
             playerStatus = .Paused
-            controllerButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
+              DispatchQueue.main.async {
+                self.controllerButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
+            }
             self.stoppedMusic = true
         }
         

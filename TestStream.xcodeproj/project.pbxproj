@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		595F9FAC20F7E87000A4C019 /* PlayerVCObserverExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595F9FAB20F7E87000A4C019 /* PlayerVCObserverExtension.swift */; };
 		595F9FAE20F7E90600A4C019 /* PlayerVCUIUXExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595F9FAD20F7E90600A4C019 /* PlayerVCUIUXExtension.swift */; };
-		595F9FB420F7EE4400A4C019 /* M3U8Kit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 595F9FB320F7EE4400A4C019 /* M3U8Kit.framework */; };
 		59A8628E20ECF29D00A06F60 /* PlaylistManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A8628D20ECF29D00A06F60 /* PlaylistManager.swift */; };
 		9961FD0A20DCE53C00A79E79 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9961FD0920DCE53C00A79E79 /* AppDelegate.swift */; };
 		9961FD0C20DCE53C00A79E79 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9961FD0B20DCE53C00A79E79 /* PlayerViewController.swift */; };
@@ -84,7 +83,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				595F9FB420F7EE4400A4C019 /* M3U8Kit.framework in Frameworks */,
 				9971B24F20EE66CB00B5A128 /* AVFoundation.framework in Frameworks */,
 				D8F518D0B73BE924CAF4E4BD /* Pods_TestStream.framework in Frameworks */,
 			);
@@ -222,7 +220,6 @@
 				9961FD0220DCE53C00A79E79 /* Sources */,
 				9961FD0320DCE53C00A79E79 /* Frameworks */,
 				9961FD0420DCE53C00A79E79 /* Resources */,
-				8B5478116CE3669A3B612273 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -348,24 +345,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		8B5478116CE3669A3B612273 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-TestStream/Pods-TestStream-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/M3U8Kit/M3U8Kit.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/M3U8Kit.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TestStream/Pods-TestStream-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		9DF097F55E792D2CC931FCA5 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -580,11 +559,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-framework",
-					"\"M3U8Kit\"",
-				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.azinecllc.TestStream;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "TestStream/TestStream-Bridging-Header.h";
@@ -608,11 +582,6 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
-				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-framework",
-					"\"M3U8Kit\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.azinecllc.TestStream;
 				PRODUCT_NAME = "$(TARGET_NAME)";
