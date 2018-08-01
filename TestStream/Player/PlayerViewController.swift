@@ -32,10 +32,8 @@ class PlayerViewController: UIViewController, AVAudioPlayerDelegate {
     var swipeLimit : CGFloat = 70.0
     var startCoord : [String : CGFloat] = [:]
     let notifCenter = NotificationCenter.default
-    
-    
-    
     var audioURL : [String] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         playerView.frame = CGRect(x: 0.0, y: 0.0, width: 100, height: 100)
@@ -47,9 +45,7 @@ class PlayerViewController: UIViewController, AVAudioPlayerDelegate {
     }
     
     
-    
     func getHtmlContent(callback:@escaping (_ result:String, _ stautus:Bool) -> ()) {
-        
         let task = URLSession.shared.dataTask(with: urlM3U8) { (data, response, error) in
             if error != nil {
                 print(error)
@@ -70,6 +66,7 @@ class PlayerViewController: UIViewController, AVAudioPlayerDelegate {
         }
         task.resume()
     }
+    
     
     func chooseTheHighestQuality() -> String {
         var URIArray : [String] = []
@@ -98,31 +95,22 @@ class PlayerViewController: UIViewController, AVAudioPlayerDelegate {
         return ""
     }
     
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         self.playerView.layer.frame.origin.x = (size.width - self.playerView.frame.width) / 2
         self.playerView.layer.frame.origin.y = (size.height - self.playerView.frame.height) / 2
         self.setUpSafeArea(size : size)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-    }
     
     override func viewDidAppear(_ animated: Bool) {
         notifCenter.addObserver(self, selector : #selector(self.play), name : NSNotification.Name(rawValue : "download"), object : nil)
-        //        notifCenter.addObserver(self, selector : #selector(self.pause), name : NSNotification.Name(rawValue : "pause"), object : nil)
-        //        notifCenter.addObserver(self, selector : #selector(self.continuePlaying), name : NSNotification.Name(rawValue : "continue"), object : nil)
-        //        notifCenter.addObserver(self, selector : #selector(self.playit(notification:)), name: NSNotification.Name(rawValue: "playit"), object: nil)
-        //        notifCenter.addObserver(self, selector : #selector(self.playerDidFinishPlaying(note:)), name: NSNotification.Name(rawValue: "playerDidFinishPlaying"), object: nil)
         setUpSafeArea(size: self.view.frame.size)
     }
     
     
     @objc func playerViewDidDragged(_ sender:UIPanGestureRecognizer) {
+        var newPoint = pangesture.location(in: self.view)
         velocity = (abs(sender.velocity(in: self.view).x) + abs(sender.velocity(in: self.view).y)) / 1500
         if velocity > 1.5 {
             if rewriteStartCoord {
@@ -133,8 +121,6 @@ class PlayerViewController: UIViewController, AVAudioPlayerDelegate {
         } else {
             rewriteStartCoord = true
         }
-        
-        var newPoint = pangesture.location(in: self.view)
         
         if sender.state == .began {
             offsetX = newPoint.x - playerView.center.x
@@ -159,7 +145,6 @@ class PlayerViewController: UIViewController, AVAudioPlayerDelegate {
             if newPoint.y <= self.topSafeArea {
                 playerView.center = CGPoint(x: newPoint.x, y: self.topSafeArea)
             }
-            
             
             if newPoint.x <= self.leftSafeArea && newPoint.y >= self.bottomSafeArea {
                 playerView.center = CGPoint(x: self.leftSafeArea, y: self.bottomSafeArea)
@@ -229,4 +214,5 @@ class PlayerViewController: UIViewController, AVAudioPlayerDelegate {
         }
     }
 }
+
 

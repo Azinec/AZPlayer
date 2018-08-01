@@ -19,30 +19,20 @@ class PlayerView: UIView, AVAudioPlayerDelegate {
         case End
         case Waiting
     }
-    
     var playerStatus:PlayerStatus = .Waiting
-    
     var isDownloadedMedia:Bool = false
-    var progress:Float = 0.0
-    
+    var stoppedMusic = false
     static var shared = PlayerView()
-    
     var audioPlayer : AVAudioPlayer!
-    
     let localURL : String? = Bundle.main.path(forResource: "camilacabello", ofType: "mp3")
     
     @IBOutlet weak var indicatorView: UIView!
-    
     @IBOutlet weak var controllerButton: UIButton!
-    
     @IBOutlet weak var indicatirViewHeight: NSLayoutConstraint!
-    
     @IBOutlet weak var indicatorViewWidht: NSLayoutConstraint!
-    
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     
     weak var view: UIView!
-    
     let notifCenter = NotificationCenter.default
     
     
@@ -81,22 +71,18 @@ class PlayerView: UIView, AVAudioPlayerDelegate {
             controllerButton.isUserInteractionEnabled = false
             spinner.isHidden = false
             spinner.startAnimating()
-            
         } else {
             self.playMusicF()
         }
-        
-        
-        
-        //        DownloadManager().startDownloadD()
-        
-        //        if isDownloadedMedia && playerStatus == .Playing {
-        //            notifCenter.post(name: NSNotification.Name(rawValue: "pause"), object: self)
-        //            controllerButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
-        //        } else if isDownloadedMedia && playerStatus == .Paused {
-        //            notifCenter.post(name: NSNotification.Name(rawValue: "continue"), object: self)
-        //            controllerButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
-        //        }
+    }
+    
+    
+    @objc func fillPlayer() {
+        DispatchQueue.main.async {
+            self.indicatirViewHeight.constant = self.view.frame.height * CGFloat(progress)
+            self.indicatorViewWidht.constant = self.view.frame.width * CGFloat(progress)
+            self.indicatorView.layer.cornerRadius = self.indicatorViewWidht.constant / 2
+        }
     }
     
     
@@ -105,28 +91,11 @@ class PlayerView: UIView, AVAudioPlayerDelegate {
         self.view.layer.cornerRadius = self.view.frame.height / 2
         notifCenter.addObserver(self, selector : #selector(self.playMusicF), name: NSNotification.Name(rawValue: "playit"), object: nil)
         notifCenter.addObserver(self, selector : #selector(self.changeToUninitializedState), name: NSNotification.Name(rawValue: "uninitialize"), object: nil)
+        notifCenter.addObserver(self, selector : #selector(self.fillPlayer), name: NSNotification.Name(rawValue: "fillPlayer"), object: nil)
         spinner.isHidden = true
     }
     
-    func setProgress(progress:Float) {
-        self.progress = progress
-        var progressForCheck = progress
-        if progressForCheck <= 0.0 {
-            progressForCheck = 1.0
-        }
-        if progressForCheck == 1.0 {
-            self.controllerButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
-        }
-        self.indicatirViewHeight.constant = self.frame.height * CGFloat(progressForCheck)
-        self.indicatorViewWidht.constant = self.frame.width * CGFloat(progressForCheck)
-        self.indicatorView.layer.cornerRadius = self.indicatorViewWidht.constant / 2
-    }
     
-    func appendProgress(progress:Float) {
-        setProgress(progress: self.progress + progress)
-    }
-    
-    var stoppedMusic = false
     @objc func playMusicF() {
         isDownloadedMedia = true
         DispatchQueue.main.async {
@@ -134,7 +103,7 @@ class PlayerView: UIView, AVAudioPlayerDelegate {
             self.spinner.stopAnimating()
             self.spinner.isHidden = true
         }
-      
+        
         if stoppedMusic || audioPlayer == nil {
             if let urlPath = self.localURL {
                 if !stoppedMusic {
@@ -144,7 +113,7 @@ class PlayerView: UIView, AVAudioPlayerDelegate {
                         audioPlayer.prepareToPlay()
                         audioPlayer.play()
                         playerStatus = .Playing
-                          DispatchQueue.main.async {
+                        DispatchQueue.main.async {
                             self.controllerButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
                         }
                     }
@@ -154,23 +123,22 @@ class PlayerView: UIView, AVAudioPlayerDelegate {
                 } else {
                     audioPlayer.play()
                     playerStatus = .Playing
-                      DispatchQueue.main.async {
+                    DispatchQueue.main.async {
                         self.controllerButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
                     }
                 }
-                
                 self.stoppedMusic = false
             }
         } else {
             audioPlayer.pause()
             playerStatus = .Paused
-              DispatchQueue.main.async {
+            DispatchQueue.main.async {
                 self.controllerButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
             }
             self.stoppedMusic = true
         }
-        
     }
+    
     
     @objc func changeToUninitializedState() {
         self.isDownloadedMedia = false
@@ -179,26 +147,16 @@ class PlayerView: UIView, AVAudioPlayerDelegate {
         controllerButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
     }
     
+    
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         controllerButton.setImage(nil, for: .normal)
-        
         spinner.isHidden = false
         spinner.startAnimating()
-        
         indicatirViewHeight.constant = 0.0
         indicatorViewWidht.constant = 0.0
         audioPlayer = nil
-        
         playerStatus = .Waiting
         isDownloadedMedia = false
-        
         DataDownloader(with: URL(string: "http://pubcache1.arkiva.de/test/hls_a256K.ts")!).removeLocallyCachedFile()
-        
-        //add observer to delete the cached file
-        //change the flag isDownloadedMedia to false
-        //set the image "play" --> controllerButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
     }
 }
-
-
-

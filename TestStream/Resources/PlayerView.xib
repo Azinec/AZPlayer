@@ -13,7 +13,7 @@
             <connections>
                 <outlet property="controllerButton" destination="aB1-fm-Vjm" id="HAe-WE-Qqy"/>
                 <outlet property="indicatirViewHeight" destination="BYg-7S-5vQ" id="ode-Tg-F6U"/>
-                <outlet property="indicatorView" destination="QZa-IK-tLO" id="w2z-4X-TdH"/>
+                <outlet property="indicatorView" destination="QZa-IK-tLO" id="1ch-wj-SWb"/>
                 <outlet property="indicatorViewWidht" destination="erz-IN-qG5" id="uNL-lX-FiA"/>
                 <outlet property="spinner" destination="WRH-Qw-wnd" id="VZ2-aH-KsO"/>
             </connections>
@@ -25,18 +25,19 @@
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QZa-IK-tLO">
                     <rect key="frame" x="100" y="100" width="0.0" height="0.0"/>
-                    <subviews>
-                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="WRH-Qw-wnd">
-                            <rect key="frame" x="-10" y="-10" width="20" height="20"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        </activityIndicatorView>
-                    </subviews>
-                    <color key="backgroundColor" red="0.96620899438858032" green="0.30316817202223056" blue="0.2362600364971458" alpha="0.62466989436619713" colorSpace="custom" customColorSpace="displayP3"/>
+                    <color key="backgroundColor" red="0.96620899438858032" green="0.30316817202223056" blue="0.2362600364971458" alpha="0.3864986795774647" colorSpace="custom" customColorSpace="displayP3"/>
                     <constraints>
                         <constraint firstAttribute="height" id="BYg-7S-5vQ"/>
                         <constraint firstAttribute="width" id="erz-IN-qG5"/>
                     </constraints>
                 </view>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="WRH-Qw-wnd">
+                    <rect key="frame" x="90" y="90" width="20" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="20" id="KP4-09-Q5i"/>
+                        <constraint firstAttribute="width" constant="20" id="rSY-ZV-as8"/>
+                    </constraints>
+                </activityIndicatorView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aB1-fm-Vjm">
                     <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
                     <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
@@ -50,8 +51,10 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="aB1-fm-Vjm" secondAttribute="trailing" id="Adk-63-DqM"/>
                 <constraint firstItem="aB1-fm-Vjm" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="FRe-cT-jvH"/>
+                <constraint firstItem="WRH-Qw-wnd" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Iyf-mF-LaT"/>
                 <constraint firstAttribute="bottom" secondItem="aB1-fm-Vjm" secondAttribute="bottom" id="PXP-dr-wKM"/>
                 <constraint firstItem="QZa-IK-tLO" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="aCR-6V-fjf"/>
+                <constraint firstItem="WRH-Qw-wnd" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="c7E-sC-hhi"/>
                 <constraint firstItem="QZa-IK-tLO" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="i0v-hS-coh"/>
                 <constraint firstItem="aB1-fm-Vjm" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="xJF-E3-VUn"/>
             </constraints>

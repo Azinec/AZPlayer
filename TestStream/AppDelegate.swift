@@ -9,6 +9,7 @@
 import UIKit
 
 var downloaded = false
+var progress = Float()
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
