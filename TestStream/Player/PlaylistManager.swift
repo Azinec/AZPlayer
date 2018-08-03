@@ -40,8 +40,7 @@ class DataDownloader:NSObject {
             let taskmm = sessionmnm.dataTask(with: url)
             taskmm.resume()
             
-            let concurrentQueue = DispatchQueue(label: "queuename", attributes: .concurrent)
-            concurrentQueue.async {
+            operationQueue.addOperation {
                 let tasks = sessions.dataTask(with: url)
                 tasks.taskDescription =  "added"
                 tasks.resume()
@@ -97,7 +96,6 @@ extension DataDownloader: URLSessionDelegate, URLSessionDownloadDelegate, URLSes
     
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        print(progress)
         if progress >= 0.95 {
             progress = 1
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "fillPlayer"), object: self)
