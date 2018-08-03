@@ -24,8 +24,8 @@ class DataDownloader:NSObject {
     private var generalDataFile4:Data? = nil
     var progressFirst : Float = 0
     var progressSecond : Float = 0
+    var secondTaskWillFinish = false
     var dataManager:DataManager!
-    var newFile = true
     let operationQueue = OperationQueue()
     
     
@@ -37,10 +37,14 @@ class DataDownloader:NSObject {
             operationQueue.maxConcurrentOperationCount = 2
             let sessions = URLSession(configuration: sessionConfig, delegate: self, delegateQueue: operationQueue)
             let sessionmnm = URLSession(configuration: sessionConfig, delegate: self, delegateQueue: operationQueue)
-            let taskmm = sessionmnm.dataTask(with: url)
-            taskmm.resume()
+            let concurrentQueue = DispatchQueue(label: "queuename", attributes: .concurrent)
             
-            operationQueue.addOperation {
+            concurrentQueue.async {
+                let taskmm = sessionmnm.dataTask(with: url)
+                taskmm.resume()
+            }
+            
+            concurrentQueue.async {
                 let tasks = sessions.dataTask(with: url)
                 tasks.taskDescription =  "added"
                 tasks.resume()
@@ -102,10 +106,14 @@ extension DataDownloader: URLSessionDelegate, URLSessionDownloadDelegate, URLSes
         }
         if generalDataFile3 != nil && generalDataFile4 != nil {
             generalDataFile = generalDataFile3! + generalDataFile4!
-            if newFile && generalDataFile != nil {
+            if secondTaskWillFinish {
+            if generalDataFile != nil {
                 dataManager.writeToFile(data: generalDataFile!)
                 generalDataFile = nil
-                newFile = false
+                secondTaskWillFinish = false
+                }
+            } else {
+                secondTaskWillFinish = true
             }
         }
     }
@@ -115,7 +123,6 @@ extension DataDownloader: URLSessionDelegate, URLSessionDownloadDelegate, URLSes
         let urlPath = DataManager().getDirectory().appendingPathComponent("tempfile.ts")
         var fileManager = FileManager.default
         try! fileManager.removeItem(at: urlPath)
-        newFile = true
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "uninitialize"), object: self)
     }
     
