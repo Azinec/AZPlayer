@@ -11,33 +11,14 @@ import UIKit
 
 class PlaylistManager: NSObject {
     
-    private var baseUrlString:String = ""
-    private var baseUrl:URL  {
-        get {
-            return URL(string: self.baseUrlString)!
-        }
-    }
-    
-    
-    override init() {
-        super.init()
-    }
-    
-    
-    init(url:String) {
-        baseUrlString = url
-    }
-    
-    
     func fetchPlaylist(url : String) {
-        let downloader = DataDownloader(with: URL(string: url)!)
-        downloader.startDownload(tempName: "\(NSDate().timeIntervalSince1970)")
+        let downloader = DataDownloader()
+        downloader.startDownload(urlHQ: URL(string: url))
     }
 }
 
 
 class DataDownloader:NSObject {
-    private var baseURL:URL? = nil
     private var generalDataFile:Data? = nil
     private var generalDataFile3:Data? = nil
     private var generalDataFile4:Data? = nil
@@ -45,26 +26,20 @@ class DataDownloader:NSObject {
     var progressSecond : Float = 0
     var dataManager:DataManager!
     var newFile = true
-    let asd = OperationQueue()
+    let operationQueue = OperationQueue()
     
-    
-    init(with url:URL) {
-        self.baseURL = url
-    }
-    
-    
-    func startDownload(tempName:String="") {
+    func startDownload(urlHQ : URL?) {
         self.generalDataFile = nil
-        if let url = self.baseURL {
+        if let url = urlHQ {
             self.dataManager = DataManager()
             let sessionConfig = URLSessionConfiguration.default
-            asd.maxConcurrentOperationCount = 2
-            let sessions = URLSession(configuration: sessionConfig, delegate: self, delegateQueue: asd)
-            let sessionmnm = URLSession(configuration: sessionConfig, delegate: self, delegateQueue: asd)
+            operationQueue.maxConcurrentOperationCount = 2
+            let sessions = URLSession(configuration: sessionConfig, delegate: self, delegateQueue: operationQueue)
+            let sessionmnm = URLSession(configuration: sessionConfig, delegate: self, delegateQueue: operationQueue)
             let taskmm = sessionmnm.dataTask(with: url)
             taskmm.resume()
             
-            asd.addOperation {
+            operationQueue.addOperation {
                 let tasks = sessions.dataTask(with: url)
                 tasks.taskDescription =  "added"
                 tasks.resume()
@@ -77,16 +52,6 @@ class DataDownloader:NSObject {
 
 class DataManager:NSObject {
     private var tempName:String = "tempfile"
-    
-    override init() {
-        super.init()
-    }
-    
-    
-    init(name:String) {
-        self.tempName = name
-    }
-    
     
     func getDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
@@ -131,6 +96,11 @@ extension DataDownloader: URLSessionDelegate, URLSessionDownloadDelegate, URLSes
     
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        print(progress)
+        if progress >= 0.99 {
+            progress = 1
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "fillPlayer"), object: self)
+        }
         if generalDataFile3 != nil && generalDataFile4 != nil {
             generalDataFile = generalDataFile3! + generalDataFile4!
             if newFile {
@@ -166,5 +136,4 @@ extension DataDownloader: URLSessionDelegate, URLSessionDownloadDelegate, URLSes
     }
     
 }
-
 

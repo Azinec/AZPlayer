@@ -19,6 +19,7 @@ class PlayerView: UIView, AVAudioPlayerDelegate {
         case End
         case Waiting
     }
+    
     var playerStatus:PlayerStatus = .Waiting
     var isDownloadedMedia:Bool = false
     var stoppedMusic = false
@@ -157,6 +158,7 @@ class PlayerView: UIView, AVAudioPlayerDelegate {
         audioPlayer = nil
         playerStatus = .Waiting
         isDownloadedMedia = false
-        DataDownloader(with: URL(string: "http://pubcache1.arkiva.de/test/hls_a256K.ts")!).removeLocallyCachedFile()
+        DataDownloader().removeLocallyCachedFile()
     }
 }
+

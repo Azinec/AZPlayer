@@ -7,9 +7,7 @@
 //
 
 import Foundation
-import AVKit
-import AVFoundation
-
+import UIKit
 
 extension PlayerViewController {
     
@@ -96,4 +94,6 @@ extension PlayerViewController {
     }
     
 }
+
+
 

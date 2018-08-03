@@ -7,14 +7,11 @@
 //
 
 import UIKit
-import AVKit
-import AVFoundation
 
-class PlayerViewController: UIViewController, AVAudioPlayerDelegate {
+class PlayerViewController: UIViewController {
     let urlM3U8 = URL(string: "http://pubcache1.arkiva.de/test/hls_index.m3u8")!
     let baseUrl:String = "http://pubcache1.arkiva.de/test/"
     var playlistUrl:String = ""
-    var filename : URL? = nil
     let playerView: PlayerView = PlayerView.shared
     var pangesture = UIPanGestureRecognizer()
     var topSafeArea : CGFloat = 0.0
@@ -214,5 +211,6 @@ class PlayerViewController: UIViewController, AVAudioPlayerDelegate {
         }
     }
 }
+
 
 
