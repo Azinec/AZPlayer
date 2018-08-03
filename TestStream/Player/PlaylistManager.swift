@@ -28,6 +28,7 @@ class DataDownloader:NSObject {
     var newFile = true
     let operationQueue = OperationQueue()
     
+    
     func startDownload(urlHQ : URL?) {
         self.generalDataFile = nil
         if let url = urlHQ {
@@ -39,7 +40,8 @@ class DataDownloader:NSObject {
             let taskmm = sessionmnm.dataTask(with: url)
             taskmm.resume()
             
-            operationQueue.addOperation {
+            let concurrentQueue = DispatchQueue(label: "queuename", attributes: .concurrent)
+            concurrentQueue.sync {
                 let tasks = sessions.dataTask(with: url)
                 tasks.taskDescription =  "added"
                 tasks.resume()
@@ -47,7 +49,6 @@ class DataDownloader:NSObject {
         }
     }
 }
-
 
 
 class DataManager:NSObject {
@@ -137,4 +138,5 @@ extension DataDownloader: URLSessionDelegate, URLSessionDownloadDelegate, URLSes
     }
     
 }
+
 
