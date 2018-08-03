@@ -41,7 +41,7 @@ class DataDownloader:NSObject {
             taskmm.resume()
             
             let concurrentQueue = DispatchQueue(label: "queuename", attributes: .concurrent)
-            concurrentQueue.sync {
+            concurrentQueue.async {
                 let tasks = sessions.dataTask(with: url)
                 tasks.taskDescription =  "added"
                 tasks.resume()
@@ -80,7 +80,7 @@ extension DataDownloader: URLSessionDelegate, URLSessionDownloadDelegate, URLSes
     
     
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
-        if dataTask.taskDescription != nil  {
+          if dataTask.taskDescription != nil  {
             if Int(exactly: dataTask.countOfBytesReceived)! < Int(exactly: dataTask.countOfBytesExpectedToReceive)!  / 2  {
                 generalDataFile3 = generalDataFile3 != nil ? generalDataFile3! + data : data
                 progressFirst = Float(dataTask.countOfBytesReceived) / Float(dataTask.countOfBytesExpectedToReceive)
