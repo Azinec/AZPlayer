@@ -103,8 +103,9 @@ extension DataDownloader: URLSessionDelegate, URLSessionDownloadDelegate, URLSes
         }
         if generalDataFile3 != nil && generalDataFile4 != nil {
             generalDataFile = generalDataFile3! + generalDataFile4!
-            if newFile {
+            if newFile && generalDataFile != nil {
                 dataManager.writeToFile(data: generalDataFile!)
+                generalDataFile = nil
                 newFile = false
             }
         }
